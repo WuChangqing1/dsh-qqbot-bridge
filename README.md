@@ -168,7 +168,7 @@ All of it lives in **your** profile patch, never in this repository:
 `appId` / `appSecret` stay in the **official plugin's** config block, untouched. This project
 never reads, stores or logs them.
 
-## Two Cordis/DSH surprises worth reading about
+## Three Cordis/DSH surprises worth reading about
 
 Both of these cost real debugging time, and both are now pinned by tests.
 
