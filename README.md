@@ -207,6 +207,23 @@ first message — and holds `phase` (`loading` / `waiting` / `running` / `failed
 `available`, `transport`, `transportOk`, `allowOpenIdsCount`, `failClosed`, `waitingFor`,
 `bots`, timestamps and `lastError`. It contains **counts, never credentials**.
 
+## Troubleshooting
+
+| Symptom | What it means |
+|---|---|
+| Not a single `[qqbot-bridge]` line on startup | Run `node scripts/bridge-status.mjs`. No file ⇒ the bundle was never mounted (check `dsh --profile web --dump-config`). `phase=waiting` ⇒ look at `waitingFor`. `phase=running` ⇒ it is fine; something else is quiet. |
+| `cannot set property "qqbot" without provide` | Service registration used `ctx.set`. Cordis 4 needs `ctx.provide` for first registration — regenerate the fork. |
+| `2 entries did not activate` | Same cause: neither the gateway nor the bridge started. |
+| `warning: 1 entry did not activate` + `pending (waiting for service: …)` | A plugin-level `inject` named a service that never appeared. This bridge declares none. |
+| `waiting for service(s): …` and nothing more | One of `sessionController`, `sessions`, `qqbot` is missing; the watchdog repeats it every 10s. |
+| `No qqbot service on this host` | The stock QQ plugin is still installed instead of the fork. |
+| `qqbot service found but it has no setMessagePreHandler` | The fork is linked but its dependencies were never installed, or it is not the patched build. |
+| QQ is silent and the log says `refused QQ message` | Your OpenID is not in `allowOpenIds` (or is misspelled). |
+| QQ is silent, log says `queue overflow` | One peer sent more than `queueMax` (default 4) messages back to back; the rest were dropped with a notice. |
+| The Bot takes very long / never answers | Watch the Bot's chat in the DSH Web UI; after `replyTimeoutMs` QQ is told to look there. |
+| An answer shows up in the Web UI but not on QQ | That turn was not triggered from QQ (you continued the conversation in the Web UI). By design. |
+| Nothing in group chats | v1 is private-chat only; group traffic is handed back to the stock chain untouched. |
+
 ## Tests
 
 ```bash
