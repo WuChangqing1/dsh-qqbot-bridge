@@ -1,0 +1,26 @@
+# Mounts the QQ -> DS Bot bridge.
+#
+# This bundle's own patch layer. The `insert` row is what makes the bridge run;
+# the profile layer (<DSH_HOME>/profiles/<name>/cordis.patch.yml) may override any
+# field of the same id without touching this file.
+#
+# Credentials are NEVER stored here. The bridge does not own a QQ gateway -- it
+# borrows the one `im-qqbot` already runs, so appId/appSecret stay in the
+# profile's own cordis.patch.yml where the QQ plugin put them.
+- insert:
+    - id: qqbot-bridge
+      name: dsh-qqbot-bridge
+      config:
+        # DS Bot team registry (read-only; never written).
+        statePath: !!js process.env.DSH_QQBOT_BRIDGE_STATE ?? ''
+        # Per-OpenID routing table lives here.
+        dataDir: !!js process.env.DSH_QQBOT_BRIDGE_DATA ?? ''
+        # FAIL CLOSED: an empty list refuses every QQ OpenID.
+        # Fill in your own OpenID before using the bridge.
+        allowOpenIds: []
+        defaultBot: 管家
+        allowGroups: false
+        replyTimeoutMs: 600000
+        queueMax: 4
+        textChunkLimit: 4500
+        debug: false

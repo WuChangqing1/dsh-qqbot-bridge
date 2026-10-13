@@ -1,0 +1,81 @@
+{
+  "name": "dsh-qqbot-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Route QQ private messages into the AI team sessions you already run in DeepSeek Harness -- same session, same memory, same permissions. No second QQ gateway, no copy-pasted system prompt.",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WuChangqing1/dsh-qqbot-bridge.git"
+  },
+  "homepage": "https://github.com/WuChangqing1/dsh-qqbot-bridge#readme",
+  "bugs": {
+    "url": "https://github.com/WuChangqing1/dsh-qqbot-bridge/issues"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "qqbot",
+    "qq",
+    "tencent-qq",
+    "cordis",
+    "agent",
+    "bridge",
+    "chatbot"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": [
+    "lib",
+    "scripts",
+    "patches",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh-CN.md",
+    "COMPATIBILITY.md",
+    "TEST-REPORT.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "test": "node scripts/run-tests.mjs",
+    "check": "node scripts/check-syntax.mjs",
+    "make:fork": "node scripts/make-bridged-qqbot.mjs --out ../dsh-bridged-qqbot",
+    "audit": "node scripts/audit-constraints.mjs",
+    "status": "node scripts/bridge-status.mjs",
+    "openids": "node scripts/show-openids.mjs"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.1",
+    "@deepseek-ai/schemastery": ">=3.18.1",
+    "@deepseek-ai/dsh-agent": ">=0.1.0-rc.6",
+    "@deepseek-ai/dsh-session": ">=0.1.0-rc.6"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": { "optional": false },
+    "@deepseek-ai/schemastery": { "optional": false },
+    "@deepseek-ai/dsh-agent": { "optional": false },
+    "@deepseek-ai/dsh-session": { "optional": false }
+  },
+  "dshBridge": {
+    "requiresQqbotService": true,
+    "serviceName": "qqbot",
+    "serviceProvider": "@tencent-connect/dsh-qqbot (local fork, patch 0001)",
+    "runtimeDependencies": 0,
+    "reusesExistingSessions": true,
+    "opensOwnGateway": false
+  }
+}

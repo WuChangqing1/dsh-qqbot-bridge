@@ -1,0 +1,13 @@
+node_modules/
+.pnpm-store/
+*.log
+.DS_Store
+data/*
+!data/.gitkeep
+
+# Scratch directories the loader-level tests create and remove again.
+# They must live inside the project so a `cordis.yml` entry can name the plugin
+# with a RELATIVE specifier: the Cordis Include builtin resolves relative names
+# against the config directory and does not accept an absolute path.
+.loader-fixture*/
+.probe/

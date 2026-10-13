@@ -1,0 +1,34 @@
+# Minimal CI. The interesting tests need a DSH checkout, the generated fork and an
+# installed profile, so on a bare runner they SKIP with a reason instead of failing
+# (see tests/cordis-harness.mjs). What still runs here is real: config/schema
+# validation, the allowlist gate, chunking, queues, de-duplication, the router and
+# the rejected-OpenID log.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [22.x]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # Every test file is spawned with stdio:'inherit' by this runner, so it works
+      # without the host installing anything.
+      - name: Run the suite
+        run: node scripts/run-tests.mjs
+
+      - name: Syntax check every source file
+        run: node scripts/check-syntax.mjs
