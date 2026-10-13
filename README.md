@@ -9,6 +9,10 @@
 
 > Route QQ private messages into the AI team sessions you **already** have in [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) — same session id, same memory, same permissions. No second QQ gateway, no copy-pasted system prompt.
 
+![Asking the 程序员 Bot for a quicksort on QQ, and getting the real session's answer back](assets/demo.gif)
+
+*Real run: a private message on QQ, answered by the Bot's actual DSH session — code, files and all. The same conversation is waiting in the DSH Web UI.*
+
 ```
         QQ app                          ┌─ DSH Web UI ─┐
            │                            │  程序员 chat  │
